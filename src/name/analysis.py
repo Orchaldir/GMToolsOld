@@ -4,6 +4,11 @@ class Analysis:
 
     def __init__(self):
         self.min = 3
+        self.consonants = {'b':0, 'c':0, 'd':0, 'f':0, 'g':0, 
+            'h':0, 'j':0, 'k':0, 'l':0, 'm':0, 'n':0, 'p':0,
+            'q':0, 'r':0, 's':0, 't':0, 'v':0, 'w':0, 'x':0, 
+            'y':0, 'z':0}
+        self.consonants_n = 0
         self.vowels = {'a':0, 'e':0, 'i':0, 'o':0, 'u':0}
         self.vowels_n = 0
     
@@ -20,6 +25,9 @@ class Analysis:
             if char in self.vowels:
                 self.vowels[char] += 1
                 self.vowels_n += 1
+            elif char in self.consonants:
+                self.consonants[char] += 1
+                self.consonants_n += 1
     
         return True
 
