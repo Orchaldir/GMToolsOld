@@ -156,6 +156,10 @@ class AnalysisAnalyseWordTest(unittest.TestCase):
         self.assertEqual(analysis.start['a'], 2)
         self.assertEqual(analysis.start['u'], 1)
         self.assertEqual(analysis.start['v'], 1)
+        
+        self.assertTrue(analysis.analyse_word('group'))
+        
+        self.assertEqual(analysis.groups['ou'], 2)
     
     def test_invalid_word(self):
         analysis = Analysis()

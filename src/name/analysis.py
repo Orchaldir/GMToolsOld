@@ -13,6 +13,10 @@ class Analysis:
         self.vowels_n = 0
         self.start = {}
         self.start_n = 0
+        self.groups = {}
+        self.groups_max = 0
+        self.groups_avg = 0
+        self.max_group_length = 4
     
     def analyse_word(self, word):
         if not word or len(word) < self.min:
@@ -37,6 +41,18 @@ class Analysis:
             elif char in self.consonants:
                 self.consonants[char] += 1
                 self.consonants_n += 1
+        
+        length = len(lower)
+        
+        for pos in range(length):
+            for l in range(1,self.max_group_length):
+                if pos + l < length:
+                    group = lower[pos:pos+l+1]
+                    
+                    if group in self.groups:
+                        self.groups[group] += 1
+                    else:
+                        self.groups[group] = 1
     
         return True
 
@@ -46,4 +62,27 @@ class Analysis:
         for word in f:
             self.analyse_word(word[:-1])
         
-        f.close()        
+        f.close()      
+    
+    def calculate(self):
+        n = 1
+        self.groups_avg = 1
+        
+        for i in self.groups.values():
+            if i > 1:
+                self.groups_avg += i
+                n += 1
+            if i > self.groups_max:
+                self.groups_max = i
+        
+        self.groups_avg = int(self.groups_avg / n)
+        
+        min = self.groups_avg + 1
+        to_remove = []
+        
+        for group, n in self.groups.iteritems():  
+            if n < min:
+                to_remove.append(group)
+        
+        for group in to_remove:
+            del self.groups[group]
