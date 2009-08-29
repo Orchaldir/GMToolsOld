@@ -41,6 +41,10 @@ class AnalysisAnalyseWordTest(unittest.TestCase):
         self.assertEqual(analysis.vowels['o'], 0)
         self.assertEqual(analysis.vowels['u'], 0)
         
+        self.assertEqual(len(analysis.start), 1)
+        self.assertEqual(analysis.start_n, 1)
+        self.assertEqual(analysis.start['v'], 1)
+        
         self.assertTrue(analysis.analyse_word('aeiou'))
         
         self.assertEqual(analysis.consonants_n, 4)
@@ -72,6 +76,11 @@ class AnalysisAnalyseWordTest(unittest.TestCase):
         self.assertEqual(analysis.vowels['i'], 1)
         self.assertEqual(analysis.vowels['o'], 1)
         self.assertEqual(analysis.vowels['u'], 1)
+        
+        self.assertEqual(len(analysis.start), 2)
+        self.assertEqual(analysis.start_n, 2)
+        self.assertEqual(analysis.start['a'], 1)
+        self.assertEqual(analysis.start['v'], 1)
         
         self.assertTrue(analysis.analyse_word('analysis'))
         
@@ -105,6 +114,11 @@ class AnalysisAnalyseWordTest(unittest.TestCase):
         self.assertEqual(analysis.vowels['o'], 1)
         self.assertEqual(analysis.vowels['u'], 1)
         
+        self.assertEqual(len(analysis.start), 2)
+        self.assertEqual(analysis.start_n, 3)
+        self.assertEqual(analysis.start['a'], 2)
+        self.assertEqual(analysis.start['v'], 1)
+        
         self.assertTrue(analysis.analyse_word('UPPERCASE'))
         
         self.assertEqual(analysis.consonants_n, 14)
@@ -136,6 +150,12 @@ class AnalysisAnalyseWordTest(unittest.TestCase):
         self.assertEqual(analysis.vowels['i'], 2)
         self.assertEqual(analysis.vowels['o'], 1)
         self.assertEqual(analysis.vowels['u'], 2)
+        
+        self.assertEqual(len(analysis.start), 3)
+        self.assertEqual(analysis.start_n, 4)
+        self.assertEqual(analysis.start['a'], 2)
+        self.assertEqual(analysis.start['u'], 1)
+        self.assertEqual(analysis.start['v'], 1)
     
     def test_invalid_word(self):
         analysis = Analysis()

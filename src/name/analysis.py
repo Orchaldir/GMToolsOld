@@ -11,6 +11,8 @@ class Analysis:
         self.consonants_n = 0
         self.vowels = {'a':0, 'e':0, 'i':0, 'o':0, 'u':0}
         self.vowels_n = 0
+        self.start = {}
+        self.start_n = 0
     
     def analyse_word(self, word):
         if not word or len(word) < self.min:
@@ -20,6 +22,13 @@ class Analysis:
             return False
         
         lower = word.strip().lower()
+        
+        if lower[0] in self.start:
+            self.start[lower[0]] += 1
+        else:
+            self.start[lower[0]] = 1
+        
+        self.start_n += 1
             
         for char in lower:
             if char in self.vowels:
