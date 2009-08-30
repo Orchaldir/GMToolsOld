@@ -31,6 +31,10 @@ class Analysis:
         self.templates = {}
         self.templates_max = 0
         self.templates_avg = 0
+        
+        self.reduced_templates = {}
+        self.reduced_templates_max = 0
+        self.reduced_templates_avg = 0
     
     def analyse_template(self, word):
         template = self.get_template(word)
@@ -113,6 +117,13 @@ class Analysis:
         self.endings_max, self.endings_avg = self.calculate_dict(self.endings)
         self.groups_max, self.groups_avg = self.calculate_dict(self.groups)
         self.templates_max, self.templates_avg = self.calculate_dict(self.templates)
+        
+        for template, n in self.templates.iteritems():
+            reduced = self.reduce_template(template)
+            
+            self.reduced_templates[reduced] = self.reduced_templates.get(reduced, 0) + n
+        
+        self.reduced_templates_max, self.reduced_templates_avg = self.calculate_dict(self.reduced_templates)
     
     def get_template(self, word):
         template = ''
@@ -124,6 +135,18 @@ class Analysis:
                 template += 'c'
                 
         return template
+    
+    def reduce_template(self, template):
+        reduced = ''
+        
+        last = None
+        
+        for char in template:
+            if char is not last:
+                reduced += char
+                last = char
+                
+        return reduced
     
     def save(self, filename):
         f = open(filename, "w")
@@ -150,6 +173,10 @@ class Analysis:
         
         f.write('\nTemplates: max=%d avg=%d\n' % (self.templates_max, self.templates_avg))
         for template, n in self.templates.iteritems():
+            f.write('  %s=%d\n' % (template, n)) 
+        
+        f.write('\nReduced Templates: max=%d avg=%d\n' % (self.reduced_templates_max, self.reduced_templates_avg))
+        for template, n in self.reduced_templates.iteritems():
             f.write('  %s=%d\n' % (template, n)) 
         
         f.close()        
