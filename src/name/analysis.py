@@ -21,12 +21,21 @@ class Analysis:
         self.groups = {}
         self.groups_max = 0
         self.groups_avg = 0
-        self.max_group_length = 4
+        self.max_group_length = 3
         
         self.endings = {}
         self.endings_max = 0
         self.endings_avg = 0
         self.max_ending_length = 3
+        
+        self.templates = {}
+        self.templates_max = 0
+        self.templates_avg = 0
+    
+    def analyse_template(self, word):
+        template = self.get_template(word)
+        
+        self.templates[template] = self.templates.get(template, 0) + 1
     
     def analyse_ending(self, word):
         length = len(word)
@@ -70,6 +79,7 @@ class Analysis:
         
         self.analyse_ending(lower)
         self.analyse_groups(lower)
+        self.analyse_template(lower)
     
         return True
 
@@ -96,20 +106,24 @@ class Analysis:
         p_avg = int(p_avg / n)
         
         p_min = p_avg
-        to_remove = []
-        
-        for e, n in probabilities.iteritems():  
-            if n < p_min:
-                to_remove.append(e)
-        
-        for e in to_remove:
-            del probabilities[e]
         
         return p_max, p_avg
     
     def calculate(self):
         self.endings_max, self.endings_avg = self.calculate_dict(self.endings)
         self.groups_max, self.groups_avg = self.calculate_dict(self.groups)
+        self.templates_max, self.templates_avg = self.calculate_dict(self.templates)
+    
+    def get_template(self, word):
+        template = ''
+        
+        for char in word:
+            if char in self.vowels:
+                template += 'v'
+            elif char in self.consonants:
+                template += 'c'
+                
+        return template
     
     def save(self, filename):
         f = open(filename, "w")
@@ -133,5 +147,9 @@ class Analysis:
         f.write('\nGroups: max=%d avg=%d\n' % (self.groups_max, self.groups_avg))
         for char, n in self.groups.iteritems():
             f.write('  %s=%d\n' % (char, n))
+        
+        f.write('\nTemplates: max=%d avg=%d\n' % (self.templates_max, self.templates_avg))
+        for template, n in self.templates.iteritems():
+            f.write('  %s=%d\n' % (template, n)) 
         
         f.close()        
