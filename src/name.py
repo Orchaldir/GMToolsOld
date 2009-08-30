@@ -1,4 +1,5 @@
 from name.analysis import Analysis
+from name.generator import Generator
 
 
 if __name__ == "__main__":
@@ -17,3 +18,8 @@ if __name__ == "__main__":
     print 'Reduced Templates: max=%d avg=%d' % (analysis.reduced_templates_max, analysis.reduced_templates_avg)
     
     analysis.save('../data/analysis/' + filename + '.txt')
+    
+    generator = Generator(analysis.consonants, analysis.vowels, 'cvcvc')     
+    
+    for i in range(10):
+        print generator.generate()

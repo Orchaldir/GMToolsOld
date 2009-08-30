@@ -5,6 +5,8 @@ import name.analysis_analyse_ending_test
 import name.analysis_analyse_word_test
 import name.analysis_get_template_test
 import name.analysis_reduce_template_test
+import name.generator_test
+import name.generator_choose_test
 
 
 if __name__ == "__main__":
@@ -14,6 +16,8 @@ if __name__ == "__main__":
     suites.extend(name.analysis_analyse_word_test.get_tests())
     suites.extend(name.analysis_get_template_test.get_tests())
     suites.extend(name.analysis_reduce_template_test.get_tests())
+    suites.extend(name.generator_test.get_tests())
+    suites.extend(name.generator_choose_test.get_tests())
 
     suite = unittest.TestSuite(suites)
     
