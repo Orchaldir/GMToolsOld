@@ -4,19 +4,48 @@ class Analysis:
 
     def __init__(self):
         self.min = 3
+        
         self.consonants = {'b':0, 'c':0, 'd':0, 'f':0, 'g':0, 
             'h':0, 'j':0, 'k':0, 'l':0, 'm':0, 'n':0, 'p':0,
             'q':0, 'r':0, 's':0, 't':0, 'v':0, 'w':0, 'x':0, 
             'y':0, 'z':0}
         self.consonants_n = 0
+        
         self.vowels = {'a':0, 'e':0, 'i':0, 'o':0, 'u':0}
         self.vowels_n = 0
+        
         self.start = {}
-        self.start_n = 0
+        
+        self.number = 0
+        
         self.groups = {}
         self.groups_max = 0
         self.groups_avg = 0
         self.max_group_length = 4
+        
+        self.endings = {}
+        self.endings_max = 0
+        self.endings_avg = 0
+        self.max_ending_length = 3
+    
+    def analyse_ending(self, word):
+        length = len(word)
+        
+        for l in range(1,self.max_ending_length):
+            if l <= length:
+                end = word[length-(1+l):]
+                
+                self.endings[end] = self.endings.get(end, 0) + 1
+    
+    def analyse_groups(self, word):
+        length = len(word)
+        
+        for pos in range(length):
+            for l in range(1,self.max_group_length):
+                if pos + l < length:
+                    group = word[pos:pos+l+1]
+                    
+                    self.groups[group] = self.groups.get(group, 0) + 1
     
     def analyse_word(self, word):
         if not word or len(word) < self.min:
@@ -27,12 +56,9 @@ class Analysis:
         
         lower = word.strip().lower()
         
-        if lower[0] in self.start:
-            self.start[lower[0]] += 1
-        else:
-            self.start[lower[0]] = 1
+        self.start[lower[0]] = self.start.get(lower[0], 0) + 1
         
-        self.start_n += 1
+        self.number += 1
             
         for char in lower:
             if char in self.vowels:
@@ -42,17 +68,8 @@ class Analysis:
                 self.consonants[char] += 1
                 self.consonants_n += 1
         
-        length = len(lower)
-        
-        for pos in range(length):
-            for l in range(1,self.max_group_length):
-                if pos + l < length:
-                    group = lower[pos:pos+l+1]
-                    
-                    if group in self.groups:
-                        self.groups[group] += 1
-                    else:
-                        self.groups[group] = 1
+        self.analyse_ending(lower)
+        self.analyse_groups(lower)
     
         return True
 
@@ -64,25 +81,32 @@ class Analysis:
         
         f.close()      
     
-    def calculate(self):
+    def calculate_dict(self, propabilities):    
         n = 1
-        self.groups_avg = 1
+        p_avg = 1
+        p_max = 0
         
-        for i in self.groups.values():
+        for i in propabilities.values():
             if i > 1:
-                self.groups_avg += i
+                p_avg += i
                 n += 1
-            if i > self.groups_max:
-                self.groups_max = i
+            if i > p_max:
+                p_max = i
         
-        self.groups_avg = int(self.groups_avg / n)
+        p_avg = int(p_avg / n)
         
-        min = self.groups_avg + 1
+        p_min = p_avg
         to_remove = []
         
-        for group, n in self.groups.iteritems():  
-            if n < min:
-                to_remove.append(group)
+        for e, n in propabilities.iteritems():  
+            if n < p_min:
+                to_remove.append(e)
         
-        for group in to_remove:
-            del self.groups[group]
+        for e in to_remove:
+            del propabilities[e]
+        
+        return p_max, p_avg
+    
+    def calculate(self):
+        self.endings_max, self.endings_avg = self.calculate_dict(self.endings)
+        self.groups_max, self.groups_avg = self.calculate_dict(self.groups)

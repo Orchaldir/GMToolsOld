@@ -42,7 +42,7 @@ class AnalysisAnalyseWordTest(unittest.TestCase):
         self.assertEqual(analysis.vowels['u'], 0)
         
         self.assertEqual(len(analysis.start), 1)
-        self.assertEqual(analysis.start_n, 1)
+        self.assertEqual(analysis.number, 1)
         self.assertEqual(analysis.start['v'], 1)
         
         self.assertTrue(analysis.analyse_word('aeiou'))
@@ -78,7 +78,7 @@ class AnalysisAnalyseWordTest(unittest.TestCase):
         self.assertEqual(analysis.vowels['u'], 1)
         
         self.assertEqual(len(analysis.start), 2)
-        self.assertEqual(analysis.start_n, 2)
+        self.assertEqual(analysis.number, 2)
         self.assertEqual(analysis.start['a'], 1)
         self.assertEqual(analysis.start['v'], 1)
         
@@ -115,7 +115,7 @@ class AnalysisAnalyseWordTest(unittest.TestCase):
         self.assertEqual(analysis.vowels['u'], 1)
         
         self.assertEqual(len(analysis.start), 2)
-        self.assertEqual(analysis.start_n, 3)
+        self.assertEqual(analysis.number, 3)
         self.assertEqual(analysis.start['a'], 2)
         self.assertEqual(analysis.start['v'], 1)
         
@@ -152,7 +152,7 @@ class AnalysisAnalyseWordTest(unittest.TestCase):
         self.assertEqual(analysis.vowels['u'], 2)
         
         self.assertEqual(len(analysis.start), 3)
-        self.assertEqual(analysis.start_n, 4)
+        self.assertEqual(analysis.number, 4)
         self.assertEqual(analysis.start['a'], 2)
         self.assertEqual(analysis.start['u'], 1)
         self.assertEqual(analysis.start['v'], 1)
