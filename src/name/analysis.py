@@ -153,30 +153,34 @@ class Analysis:
         
         f.write('Vowels: count=%d\n' % (self.vowels_n))
         for char, n in self.vowels.iteritems():
-            f.write('  %s=%d\n' % (char, n))
+            f.write('  %s=%d\n' % (char, n))        
             
         f.write('\nConsonants: count=%d\n' % (self.consonants_n))
         for char, n in self.consonants.iteritems():
             f.write('  %s=%d\n' % (char, n))
         
         f.write('\nStart:\n')
-        for char, n in self.start.iteritems():
+        for char, n in sorted(self.start.iteritems(), key=lambda (k,v):(v,k), reverse=True):
             f.write('  %s=%d\n' % (char, n))
         
         f.write('\nEndings: max=%d avg=%d\n' % (self.endings_max, self.endings_avg))
-        for char, n in self.endings.iteritems():
+        #for char, n in self.endings.iteritems():
+        for char, n in sorted(self.endings.iteritems(), key=lambda (k,v):(v,k), reverse=True):
             f.write('  %s=%d\n' % (char, n))
         
         f.write('\nGroups: max=%d avg=%d\n' % (self.groups_max, self.groups_avg))
-        for char, n in self.groups.iteritems():
+        #for char, n in self.groups.iteritems():
+        for char, n in sorted(self.groups.iteritems(), key=lambda (k,v):(v,k), reverse=True):
             f.write('  %s=%d\n' % (char, n))
         
         f.write('\nTemplates: max=%d avg=%d\n' % (self.templates_max, self.templates_avg))
-        for template, n in self.templates.iteritems():
+        #for template, n in self.templates.iteritems():
+        for template, n in sorted(self.templates.iteritems(), key=lambda (k,v):(v,k), reverse=True):
             f.write('  %s=%d\n' % (template, n)) 
         
         f.write('\nReduced Templates: max=%d avg=%d\n' % (self.reduced_templates_max, self.reduced_templates_avg))
-        for template, n in self.reduced_templates.iteritems():
+        #for template, n in self.reduced_templates.iteritems():
+        for template, n in sorted(self.reduced_templates.iteritems(), key=lambda (k,v):(v,k), reverse=True):
             f.write('  %s=%d\n' % (template, n)) 
         
         f.close()        

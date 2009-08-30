@@ -21,7 +21,7 @@ if __name__ == "__main__":
     analysis.save('../data/analysis/' + filename + '.txt')
     
     generator = Generator(analysis.consonants, analysis.vowels)
-    template = Template('<vc|c><vc|vcvc>(es|on|os|us|as)') 
+    template = Template('<cvc|cvcvc|vcvc|vcvcvc>(es|on|os|us|as)') 
     
     for i in range(10):
         print generator.generate(template)
