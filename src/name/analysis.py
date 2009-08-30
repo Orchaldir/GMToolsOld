@@ -81,12 +81,12 @@ class Analysis:
         
         f.close()      
     
-    def calculate_dict(self, propabilities):    
+    def calculate_dict(self, probabilities):    
         n = 1
         p_avg = 1
         p_max = 0
         
-        for i in propabilities.values():
+        for i in probabilities.values():
             if i > 1:
                 p_avg += i
                 n += 1
@@ -98,15 +98,40 @@ class Analysis:
         p_min = p_avg
         to_remove = []
         
-        for e, n in propabilities.iteritems():  
+        for e, n in probabilities.iteritems():  
             if n < p_min:
                 to_remove.append(e)
         
         for e in to_remove:
-            del propabilities[e]
+            del probabilities[e]
         
         return p_max, p_avg
     
     def calculate(self):
         self.endings_max, self.endings_avg = self.calculate_dict(self.endings)
         self.groups_max, self.groups_avg = self.calculate_dict(self.groups)
+    
+    def save(self, filename):
+        f = open(filename, "w")
+        
+        f.write('Vowels: count=%d\n' % (self.vowels_n))
+        for char, n in self.vowels.iteritems():
+            f.write('  %s=%d\n' % (char, n))
+            
+        f.write('\nConsonants: count=%d\n' % (self.consonants_n))
+        for char, n in self.consonants.iteritems():
+            f.write('  %s=%d\n' % (char, n))
+        
+        f.write('\nStart:\n')
+        for char, n in self.start.iteritems():
+            f.write('  %s=%d\n' % (char, n))
+        
+        f.write('\nEndings: max=%d avg=%d\n' % (self.endings_max, self.endings_avg))
+        for char, n in self.endings.iteritems():
+            f.write('  %s=%d\n' % (char, n))
+        
+        f.write('\nGroups: max=%d avg=%d\n' % (self.groups_max, self.groups_avg))
+        for char, n in self.groups.iteritems():
+            f.write('  %s=%d\n' % (char, n))
+        
+        f.close()        
