@@ -1,10 +1,10 @@
 import unittest
 
 
-from name.generator import choose
+from name.template import choose
 
 
-class GeneratorChooseTest(unittest.TestCase):
+class TemplateChooseTest(unittest.TestCase):
 
     def test_choose(self):
         probabilities = {}
@@ -29,5 +29,5 @@ class GeneratorChooseTest(unittest.TestCase):
 
 
 def get_tests():
-    return unittest.makeSuite(GeneratorChooseTest, 'test')
+    return unittest.makeSuite(TemplateChooseTest, 'test')
     

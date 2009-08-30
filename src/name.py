@@ -1,5 +1,6 @@
 from name.analysis import Analysis
 from name.generator import Generator
+from name.template import Template
 
 
 if __name__ == "__main__":
@@ -19,7 +20,8 @@ if __name__ == "__main__":
     
     analysis.save('../data/analysis/' + filename + '.txt')
     
-    generator = Generator(analysis.consonants, analysis.vowels, 'cvcvc')     
+    generator = Generator(analysis.consonants, analysis.vowels)
+    template = Template('<vc|c><vc|vcvc>(es|on|os|us|as)') 
     
     for i in range(10):
-        print generator.generate()
+        print generator.generate(template)
