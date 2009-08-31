@@ -23,6 +23,8 @@ class Analysis:
         self.groups_avg = 0
         self.max_group_length = 3
         
+        self.c_combs = {}
+        
         self.endings = {}
         self.endings_max = 0
         self.endings_avg = 0
@@ -59,6 +61,9 @@ class Analysis:
                     group = word[pos:pos+l+1]
                     
                     self.groups[group] = self.groups.get(group, 0) + 1
+                    
+                    if self.only_consonants(group):
+                        self.c_combs[group] = self.c_combs.get(group, 0) + 1
     
     def analyse_word(self, word):
         if not word or len(word) < self.min:
@@ -136,6 +141,13 @@ class Analysis:
                 
         return template
     
+    def only_consonants(self, word):
+        for char in word:
+            if char in self.vowels:
+                return False
+            
+        return True
+    
     def reduce_template(self, template):
         reduced = ''
         
@@ -148,38 +160,34 @@ class Analysis:
                 
         return reduced
     
-    def save(self, filename):
+    def save(self, filename, combs_min=2, endings_min=2):
         f = open(filename, "w")
         
         f.write('Vowels: count=%d\n' % (self.vowels_n))
-        for char, n in self.vowels.iteritems():
+        #for char, n in self.vowels.iteritems():
+        for char, n in sorted(self.vowels.iteritems(), key=lambda (k,v):(v,k), reverse=True):
             f.write('  %s=%d\n' % (char, n))        
             
         f.write('\nConsonants: count=%d\n' % (self.consonants_n))
-        for char, n in self.consonants.iteritems():
+        #for char, n in self.consonants.iteritems():
+        for char, n in sorted(self.consonants.iteritems(), key=lambda (k,v):(v,k), reverse=True):
             f.write('  %s=%d\n' % (char, n))
+            
+        f.write('\nConsonant Combinations:\n')
+        for char, n in sorted(self.c_combs.iteritems(), key=lambda (k,v):(v,k), reverse=True):
+            if n >= combs_min:
+                f.write('  %s=%d\n' % (char, n))
         
         f.write('\nStart:\n')
         for char, n in sorted(self.start.iteritems(), key=lambda (k,v):(v,k), reverse=True):
             f.write('  %s=%d\n' % (char, n))
         
-        f.write('\nEndings: max=%d avg=%d\n' % (self.endings_max, self.endings_avg))
-        #for char, n in self.endings.iteritems():
+        f.write('\nEndings:\n')
         for char, n in sorted(self.endings.iteritems(), key=lambda (k,v):(v,k), reverse=True):
-            f.write('  %s=%d\n' % (char, n))
+            if n >= endings_min:
+                f.write('  %s=%d\n' % (char, n))
         
-        f.write('\nGroups: max=%d avg=%d\n' % (self.groups_max, self.groups_avg))
-        #for char, n in self.groups.iteritems():
-        for char, n in sorted(self.groups.iteritems(), key=lambda (k,v):(v,k), reverse=True):
-            f.write('  %s=%d\n' % (char, n))
-        
-        f.write('\nTemplates: max=%d avg=%d\n' % (self.templates_max, self.templates_avg))
-        #for template, n in self.templates.iteritems():
-        for template, n in sorted(self.templates.iteritems(), key=lambda (k,v):(v,k), reverse=True):
-            f.write('  %s=%d\n' % (template, n)) 
-        
-        f.write('\nReduced Templates: max=%d avg=%d\n' % (self.reduced_templates_max, self.reduced_templates_avg))
-        #for template, n in self.reduced_templates.iteritems():
+        f.write('\nReduced Templates:\n')
         for template, n in sorted(self.reduced_templates.iteritems(), key=lambda (k,v):(v,k), reverse=True):
             f.write('  %s=%d\n' % (template, n)) 
         
