@@ -43,6 +43,12 @@ class TemplateTest(unittest.TestCase):
         self.assertTrue(name[1] in consonants)
         self.assertTrue(name[2] in consonants)
         self.assertTrue(name[3] in vowels)
+        
+        template = Template('(a|b|c)')
+        
+        name = template.generate(generator)
+        self.assertEqual(len(name), 1) 
+        self.assertTrue(name is 'a' or name is 'b' or name is 'c')
 
 
 def get_tests():

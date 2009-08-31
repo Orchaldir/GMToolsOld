@@ -20,8 +20,12 @@ if __name__ == "__main__":
     
     analysis.save('../data/analysis/' + filename + '.txt')
     
-    generator = Generator(analysis.consonants, analysis.vowels)
-    template = Template('<cvc|cvcvc|vcvc|vcvcvc>(es|on|os|us|as)') 
+    c_combs = {'th':21, 'st':17, 'ph':16, 'ch':11}
+    v_combs = {'eu':48, 'io':32, 'ia':28, 'oo':26, 'ai':26, 'ae':26, 'oe':25, 
+        'ei':25, 'eo':24, 'iu':23, 'au':22, 'ao':22}
+    
+    generator = Generator(analysis.consonants, analysis.vowels, c_combs, v_combs)
+    template = Template('<CVC|CVCVC|VCVC|VCVCVC>(es|on|os|us|as)') 
     
     for i in range(10):
         print generator.generate(template)

@@ -47,7 +47,7 @@ class Template:
         list_of_parts = [] 
         
         for char in template:
-            if char is 'c' or char is 'v':
+            if char is 'c' or char is 'v' or char is 'C' or char is 'V':
                 if or_symbol or or_text:
                     part += char
                 else:
@@ -108,6 +108,10 @@ class Template:
                 name += choose_random(generator.consonants, generator.consonants_n)
             elif e is 'v':
                 name += choose_random(generator.vowels, generator.vowels_n)
+            elif e is 'C':
+                name += choose_random(generator.c_combs, generator.c_combs_n)
+            elif e is 'V':
+                name += choose_random(generator.v_combs, generator.v_combs_n)
             else:
                 name += e.generate(generator)
         
