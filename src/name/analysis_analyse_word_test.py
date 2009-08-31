@@ -160,6 +160,7 @@ class AnalysisAnalyseWordTest(unittest.TestCase):
         self.assertTrue(analysis.analyse_word('group'))
         
         self.assertEqual(analysis.groups['ou'], 2)
+        self.assertEqual(analysis.v_combs['ou'], 2)
         
         self.assertTrue(analysis.analyse_word('great'))
         

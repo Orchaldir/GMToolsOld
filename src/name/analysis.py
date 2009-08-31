@@ -24,6 +24,7 @@ class Analysis:
         self.max_group_length = 3
         
         self.c_combs = {}
+        self.v_combs = {}
         
         self.endings = {}
         self.endings_max = 0
@@ -64,6 +65,8 @@ class Analysis:
                     
                     if self.only_consonants(group):
                         self.c_combs[group] = self.c_combs.get(group, 0) + 1
+                    elif self.only_vowels(group):
+                        self.v_combs[group] = self.v_combs.get(group, 0) + 1
     
     def analyse_word(self, word):
         if not word or len(word) < self.min:
@@ -148,6 +151,13 @@ class Analysis:
             
         return True
     
+    def only_vowels(self, word):
+        for char in word:
+            if char in self.consonants:
+                return False
+                
+        return True
+    
     def reduce_template(self, template):
         reduced = ''
         
@@ -172,6 +182,11 @@ class Analysis:
         #for char, n in self.consonants.iteritems():
         for char, n in sorted(self.consonants.iteritems(), key=lambda (k,v):(v,k), reverse=True):
             f.write('  %s=%d\n' % (char, n))
+        
+        f.write('\nVowel Combinations:\n')
+        for char, n in sorted(self.v_combs.iteritems(), key=lambda (k,v):(v,k), reverse=True):
+            if n >= combs_min:
+                f.write('  %s=%d\n' % (char, n))
             
         f.write('\nConsonant Combinations:\n')
         for char, n in sorted(self.c_combs.iteritems(), key=lambda (k,v):(v,k), reverse=True):

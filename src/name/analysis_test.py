@@ -33,6 +33,16 @@ class AnalysisTest(unittest.TestCase):
         self.assertFalse(analysis.only_consonants('bcdfghjklnmpqrstvwxyzi'))
         self.assertFalse(analysis.only_consonants('bcdfghjklnmpqrstvwxyzo'))
         self.assertFalse(analysis.only_consonants('bcdfghjklnmpqrstvwxyzu'))
+    
+    def test_only_vowels(self):
+        analysis = Analysis()
+        
+        word = 'aeiou'
+        
+        self.assertTrue(analysis.only_vowels(word))
+        
+        for char in 'bcdfghjklnmpqrstvwxyz':
+            self.assertFalse(analysis.only_vowels(word + char))
 
 
 def get_tests():
